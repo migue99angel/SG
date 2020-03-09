@@ -10,7 +10,7 @@ class MyBox extends THREE.Object3D {
     // Un Mesh se compone de geometría y material
     var boxGeom = new THREE.BoxGeometry (1,1,1);
     // Como material se crea uno a partir de un color
-    var boxMat = new THREE.MeshPhongMaterial({color: 0xffff00});
+    var boxMat =  new THREE.MeshNormalMaterial();
     
     // Ya podemos construir el Mesh
     this.box = new THREE.Mesh (boxGeom, boxMat);
@@ -70,5 +70,7 @@ class MyBox extends THREE.Object3D {
     /*this.position.set (this.guiControls.posX,this.guiControls.posY,this.guiControls.posZ);
     this.rotation.set (this.guiControls.rotX,this.guiControls.rotY,this.guiControls.rotZ);*/
     //this.scale.set (this.guiControls.sizeX,this.guiControls.sizeY,this.guiControls.sizeZ);
+    this.box.rotation.y += 0.015;
+    this.box.rotation.x += 0.015;
   }
 }

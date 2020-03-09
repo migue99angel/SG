@@ -34,8 +34,20 @@ class MyScene extends THREE.Scene {
     this.ejesCilindro = new THREE.AxesHelper(5);
     this.ejesCilindro.position.set(-10,0,0);
 
+    this.ejesEsfera = new THREE.AxesHelper(5);
+    this.ejesEsfera.position.set(0,-5.0,0);
+
+    this.ejesToro = new THREE.AxesHelper(5);
+    this.ejesToro.position.set(5.0,-5.0,0)
+
+    this.ejesIcosaedro = new THREE.AxesHelper(5);
+    this.ejesIcosaedro.position.set(-5.0,-5.0,0)
+
     this.add(this.ejesCono);
     this.add(this.ejesCilindro);
+    this.add(this.ejesEsfera);
+    this.add(this.ejesToro);
+    this.add(this.ejesIcosaedro);
     
     
     // Por último creamos el modelo.
@@ -49,6 +61,15 @@ class MyScene extends THREE.Scene {
 
     this.cilindro = new MyCylinder(this.gui, "Controles del Cilindro");
     this.add(this.cilindro);
+
+    this.esfera = new MySphere(this.gui, "Controles de la Esfera");
+    this.add(this.esfera);
+
+    this.toro = new MyTorus(this.gui, "Controles del Toro");
+    this.add(this.toro);
+
+    this.icosaedro = new MyIcosahedron(this.gui, "Controles del Icosaedro");
+    this.add(this.icosaedro);
   }
   
   createCamera () {
@@ -200,7 +221,9 @@ class MyScene extends THREE.Scene {
     this.box.update();
     this.cilindro.update();
     this.cono.update();
-    
+    this.esfera.update();
+    this.toro.update();
+    this.icosaedro.update();
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
   }

@@ -7,72 +7,63 @@ class MyCylinder extends THREE.Object3D {
       this.createGUI(gui,titleGui);
       
       // Un Mesh se compone de geometría y material
-      var cylinderGeom = new THREE.CylinderGeometry (1,1,5,20);
+      var cylinderGeom = new THREE.CylinderGeometry (1,1,1,3);
       // Como material se crea uno a partir de un color
-      var cylinderMat = new THREE.MeshPhongMaterial({color: 0xffff00});
+      var cylinderMat = new THREE.MeshNormalMaterial();
       
       // Ya podemos construir el Mesh
-      var cylinder = new THREE.Mesh (cylinderGeom, cylinderMat);
+      this.cilindro = new THREE.Mesh (cylinderGeom, cylinderMat);
       // Y añadirlo como hijo del Object3D (el this)
-      this.add (cylinder);
+      this.add (this.cilindro);
       
       // Las geometrías se crean centradas en el origen.
       // Como queremos que el sistema de referencia esté en la base,
       // subimos el Mesh de el cono la mitad de su altura
-      cylinder.position.y = 0.5;
-      cylinder.position.x = -10;
+      this.cilindro.position.y = 0.5;
+      this.cilindro.position.x = -10;
     }
     
     createGUI (gui,titleGui) {
       // Controles para el tamaño, la orientación y la posición de el cono
       this.guiControls = new function () {
-        this.sizeX = 1.0;
-        this.sizeY = 1.0;
-        this.sizeZ = 1.0;
-        
-        this.rotX = 0.0;
-        this.rotY = 0.0;
-        this.rotZ = 0.0;
-        
-        this.posX = 0.0;
-        this.posY = 0.0;
-        this.posZ = 0.0;
+        this.radiusTop = 1.0;
+        this.radiusBottom = 1.0;
+        this.height = 1.0;
+        this.resolution = 3.0;
         
         // Un botón para dejarlo todo en su posición inicial
         // Cuando se pulse se ejecutará esta función.
         this.reset = function () {
-          this.sizeX = 1.0;
-          this.sizeY = 1.0;
-          this.sizeZ = 1.0;
-          
-          this.rotX = 0.0;
-          this.rotY = 0.0;
-          this.rotZ = 0.0;
-          
-          this.posX = 0.0;
-          this.posY = 0.0;
-          this.posZ = 0.0;
+          this.radiusTop = 1.0;
+          this.radiusBottom = 1.0;
+          this.height = 1.0;
+          this.resolution = 3.0;
         }
       } 
-      
+      var that = this;
       // Se crea una sección para los controles de el cono
       var folder = gui.addFolder (titleGui);
       // Estas lineas son las que añaden los componentes de la interfaz
       // Las tres cifras indican un valor mínimo, un máximo y el incremento
       // El método   listen()   permite que si se cambia el valor de la variable en código, el deslizador de la interfaz se actualice
-      folder.add (this.guiControls, 'sizeX', 0.1, 5.0, 0.1).name ('Tamaño X : ').listen();
-      folder.add (this.guiControls, 'sizeY', 0.1, 5.0, 0.1).name ('Tamaño Y : ').listen();
-      folder.add (this.guiControls, 'sizeZ', 0.1, 5.0, 0.1).name ('Tamaño Z : ').listen();
+      folder.add (this.guiControls, 'radiusTop', 0.1, 5.0, 0.1).name ('Radio Superior : ').listen().onChange(function(radiusTop){
+        var newGeo = new THREE.CylinderGeometry(radiusTop,that.guiControls.radiusBottom,that.guiControls.height,that.guiControls.resolution);
+        that.cilindro.geometry = newGeo;
+      });
+      folder.add (this.guiControls, 'radiusBottom', 0.1, 5.0, 0.1).name ('Radio Inferior : ').listen().onChange(function(radiusBottom){
+        var newGeo = new THREE.CylinderGeometry(that.guiControls.radiusTop,radiusBottom,that.guiControls.height,that.guiControls.resolution);
+        that.cilindro.geometry = newGeo;
+      });
+      folder.add (this.guiControls, 'height', 0.1, 5.0, 0.1).name ('Altura: ').listen().onChange(function(height){
+        var newGeo = new THREE.CylinderGeometry(that.guiControls.radiusTop,that.guiControls.radiusBottom,height,that.guiControls.resolution);
+        that.cilindro.geometry = newGeo;
+      });
       
-      folder.add (this.guiControls, 'rotX', 0.0, Math.PI/2, 0.1).name ('Rotación X : ').listen();
-      folder.add (this.guiControls, 'rotY', 0.0, Math.PI/2, 0.1).name ('Rotación Y : ').listen();
-      folder.add (this.guiControls, 'rotZ', 0.0, Math.PI/2, 0.1).name ('Rotación Z : ').listen();
-      
-      folder.add (this.guiControls, 'posX', -20.0, 20.0, 0.1).name ('Posición X : ').listen();
-      folder.add (this.guiControls, 'posY', 0.0, 10.0, 0.1).name ('Posición Y : ').listen();
-      folder.add (this.guiControls, 'posZ', -20.0, 20.0, 0.1).name ('Posición Z : ').listen();
-      
-      folder.add (this.guiControls, 'reset').name ('[ Reset ]');
+      folder.add (this.guiControls, 'resolution', 3.0, 20.0, 1.0).name ('Resolución : ').listen().onChange(function(resolution){
+        var newGeo = new THREE.CylinderGeometry(that.guiControls.radiusTop,that.guiControls.radiusBottom,that.guiControls.height,resolution);
+        that.cilindro.geometry = newGeo;
+      });
+ 
     }
     
     update () {
@@ -82,8 +73,10 @@ class MyCylinder extends THREE.Object3D {
       // Después, la rotación en Y
       // Luego, la rotación en X
       // Y por último la traslación
-      this.position.set (this.guiControls.posX,this.guiControls.posY,this.guiControls.posZ);
-      this.rotation.set (this.guiControls.rotX,this.guiControls.rotY,this.guiControls.rotZ);
-      this.scale.set (this.guiControls.sizeX,this.guiControls.sizeY,this.guiControls.sizeZ);
+      //this.position.set (this.guiControls.posX,this.guiControls.posY,this.guiControls.posZ);
+      //this.rotation.set (this.guiControls.rotX,this.guiControls.rotY,this.guiControls.rotZ);
+      //this.scale.set (this.guiControls.sizeX,this.guiControls.sizeY,this.guiControls.sizeZ);
+      this.cilindro.rotation.y += 0.015;
+      this.cilindro.rotation.x += 0.015;
     }
   }

@@ -10,7 +10,7 @@ class MyCone extends THREE.Object3D {
       // Un Mesh se compone de geometría y material
       var coneGeom = new THREE.ConeGeometry (1,1,32);
       // Como material se crea uno a partir de un color
-      var coneMat = new THREE.MeshPhongMaterial({color: 0xffff00});
+      var coneMat =  new THREE.MeshNormalMaterial();
       
       // Ya podemos construir el Mesh
       this.cono = new THREE.Mesh (coneGeom, coneMat);
@@ -76,5 +76,7 @@ class MyCone extends THREE.Object3D {
       // Y por último la traslación
       
       //this.scale.set (1.0,this.guiControls.altura,1.0);
+      this.cono.rotation.y += 0.015;
+      this.cono.rotation.x += 0.015;
     }
   }
