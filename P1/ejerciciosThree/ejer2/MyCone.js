@@ -13,67 +13,58 @@ class MyCone extends THREE.Object3D {
       var coneMat = new THREE.MeshPhongMaterial({color: 0xffff00});
       
       // Ya podemos construir el Mesh
-      var cone = new THREE.Mesh (coneGeom, coneMat);
+      this.cono = new THREE.Mesh (coneGeom, coneMat);
       // Y añadirlo como hijo del Object3D (el this)
-      this.add (cone);
+      this.add (this.cono);
       
       // Las geometrías se crean centradas en el origen.
       // Como queremos que el sistema de referencia esté en la base,
       // subimos el Mesh de el cono la mitad de su altura
-      cone.position.y = 0.5;
-      cone.position.x = 10;
+      this.cono.position.y = 0.5;
+      this.cono.position.x = 10;
     }
     
     createGUI (gui,titleGui) {
       // Controles para el tamaño, la orientación y la posición de el cono
       this.guiControls = new function () {
-        this.sizeX = 1.0;
-        this.sizeY = 1.0;
-        this.sizeZ = 1.0;
-        
-        this.rotX = 0.0;
-        this.rotY = 0.0;
-        this.rotZ = 0.0;
-        
-        this.posX = 0.0;
-        this.posY = 0.0;
-        this.posZ = 0.0;
+        this.radio = 1.0;
+        this.altura = 1.0;
+        this.segmentos = 3.0;
+
         
         // Un botón para dejarlo todo en su posición inicial
         // Cuando se pulse se ejecutará esta función.
         this.reset = function () {
-          this.sizeX = 1.0;
-          this.sizeY = 1.0;
-          this.sizeZ = 1.0;
-          
-          this.rotX = 0.0;
-          this.rotY = 0.0;
-          this.rotZ = 0.0;
-          
-          this.posX = 0.0;
-          this.posY = 0.0;
-          this.posZ = 0.0;
+          this.radio = 1.0;
+          this.altura = 1.0;
+          this.segmentos = 3.0;
+
         }
       } 
-      
+      var that = this
       // Se crea una sección para los controles de el cono
       var folder = gui.addFolder (titleGui);
       // Estas lineas son las que añaden los componentes de la interfaz
       // Las tres cifras indican un valor mínimo, un máximo y el incremento
       // El método   listen()   permite que si se cambia el valor de la variable en código, el deslizador de la interfaz se actualice
-      folder.add (this.guiControls, 'sizeX', 0.1, 5.0, 0.1).name ('Tamaño X : ').listen();
-      folder.add (this.guiControls, 'sizeY', 0.1, 5.0, 0.1).name ('Tamaño Y : ').listen();
-      folder.add (this.guiControls, 'sizeZ', 0.1, 5.0, 0.1).name ('Tamaño Z : ').listen();
+      folder.add (this.guiControls, 'radio', 0.1, 5.0, 0.1).name ('Radio: ').listen().onChange(function(radio){
+        var newGeo = new THREE.ConeGeometry(radio,that.guiControls.altura,that.guiControls.segmentos);
+        that.cono.geometry = newGeo;
+      });
+      folder.add (this.guiControls, 'altura', 0.1, 5.0, 0.1).name ('Altura: ').listen().onChange(function(altura){
+        var newGeo = new THREE.ConeGeometry(that.guiControls.radio,altura,that.guiControls.segmentos);
+        that.cono.geometry = newGeo;
+      });
+      folder.add (this.guiControls, 'segmentos', 3.0, 20.0, 0.1).name ('Segmentos : ').listen().onChange(function(segmentos){
+        var newGeo = new THREE.ConeGeometry(that.guiControls.radio,that.guiControls.altura,segmentos);
+        that.cono.geometry = newGeo;
+      });
+
       
-      folder.add (this.guiControls, 'rotX', 0.0, Math.PI/2, 0.1).name ('Rotación X : ').listen();
-      folder.add (this.guiControls, 'rotY', 0.0, Math.PI/2, 0.1).name ('Rotación Y : ').listen();
-      folder.add (this.guiControls, 'rotZ', 0.0, Math.PI/2, 0.1).name ('Rotación Z : ').listen();
-      
-      folder.add (this.guiControls, 'posX', -20.0, 20.0, 0.1).name ('Posición X : ').listen();
-      folder.add (this.guiControls, 'posY', 0.0, 10.0, 0.1).name ('Posición Y : ').listen();
-      folder.add (this.guiControls, 'posZ', -20.0, 20.0, 0.1).name ('Posición Z : ').listen();
-      
-      folder.add (this.guiControls, 'reset').name ('[ Reset ]');
+      folder.add (this.guiControls, 'reset').name ('[ Reset ]').listen().onChange(function(segmentos){
+        var newGeo = new THREE.ConeGeometry(that.reset.radio,that.reset.altura,that.reset.segmentos);
+        that.cono.geometry = newGeo;
+      });
     }
     
     update () {
@@ -83,8 +74,7 @@ class MyCone extends THREE.Object3D {
       // Después, la rotación en Y
       // Luego, la rotación en X
       // Y por último la traslación
-      this.position.set (this.guiControls.posX,this.guiControls.posY,this.guiControls.posZ);
-      this.rotation.set (this.guiControls.rotX,this.guiControls.rotY,this.guiControls.rotZ);
-      this.scale.set (this.guiControls.sizeX,this.guiControls.sizeY,this.guiControls.sizeZ);
+      
+      //this.scale.set (1.0,this.guiControls.altura,1.0);
     }
   }

@@ -44,8 +44,8 @@ class MyScene extends THREE.Scene {
     this.cono = new MyCone(this.gui, "Controles del Cono");
     this.add (this.cono);
 
-    this.model = new MyBox(this.gui,"Controles de la caja");
-    this.add (this.model);
+    this.box = new MyBox(this.gui,"Controles de la Caja");
+    this.add (this.box);
 
     this.cilindro = new MyCylinder(this.gui, "Controles del Cilindro");
     this.add(this.cilindro);
@@ -197,7 +197,7 @@ class MyScene extends THREE.Scene {
     this.cameraControl.update();
     
     // Se actualiza el resto del modelo
-    this.model.update();
+    this.box.update();
     this.cilindro.update();
     this.cono.update();
     
