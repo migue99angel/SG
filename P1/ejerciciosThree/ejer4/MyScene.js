@@ -35,9 +35,10 @@ class MyScene extends THREE.Scene {
     // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
     // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
     this.corazon = new MyHeart(this.gui, "Controles del Corazon");
-    this.diamond = new MyDiamond(this.gui, "Controles del Diamante");
+    this.diamante = new MyDiamond(this.gui, "Controles del Diamante");
     this.spade = new MySpade(this.gui, "Controles de la pica");
     this.club = new MyClub(this.gui, "Controles del trebol");
+
     this.columnaTrebol = new ClubColumn();
     this.columnaCorazon = new HeartColumn();
 
@@ -46,14 +47,23 @@ class MyScene extends THREE.Scene {
     this.corazon.rotation.x = Math.PI;
 
     this.club.position.set(0.0,-2.0,0.0);
+    this.spade.position.set(0,2,0);
    
+    this.nodoA = new THREE.Object3D();
+    this.nodoA.position.set(2.0,0.0,0.0);
+    this.nodoA.add(this.corazon);
 
-    this.add(this.corazon);
-    this.add(this.diamond);
+    this.cora = new THREE.Object3D();
+    this.cora.add(this.nodoA);
+    
+
+    this.add(this.cora);
+    this.add(this.diamante);
     this.add(this.spade);
     this.add(this.club);
     this.add(this.columnaTrebol);
     this.add(this.columnaCorazon);
+
   }
   
   createCamera () {
@@ -190,7 +200,7 @@ class MyScene extends THREE.Scene {
     
     // Literalmente le decimos al navegador: "La próxima vez que haya que refrescar la pantalla, llama al método que te indico".
     // Si no existiera esta línea,  update()  se ejecutaría solo la primera vez.
-    requestAnimationFrame(() => this.update())
+    requestAnimationFrame(() => this.update());
     
     // Le decimos al renderizador "visualiza la escena que te indico usando la cámara que te estoy pasando"
     this.renderer.render (this, this.getCamera());
@@ -201,10 +211,17 @@ class MyScene extends THREE.Scene {
     
     // Se muestran o no los ejes según lo que idique la GUI
     this.axis.visible = this.guiControls.axisOnOff;
-    
+    this.spade.update();
+    this.corazon.update();
+    this.club.update();
+    this.diamante.update();
+    this.columnaTrebol.update();
+    this.columnaCorazon.update();
+    this.cora.rotation.z += 0.01;
+    this.nodoA.rotation.z -= 0.01;
     // Se actualiza la posición de la cámara según su controlador
     this.cameraControl.update();
-    //this.heart.update();
+    
   }
 }
 

@@ -19,7 +19,7 @@ class MyClub extends THREE.Object3D{
 
 
 
-        this.add(this.base);
+        //this.add(this.base);
 
         var superiorShape = new THREE.Shape();
 
@@ -36,6 +36,22 @@ class MyClub extends THREE.Object3D{
         this.superior.position.set(0,0.6,0.0);
 
 
-        this.add(this.superior);
+        //this.add(this.superior);
+        this.nodoA = new THREE.Object3D();
+        this.nodoA.position.set(2.0,0.0,0.0);
+        this.nodoA.add(this.superior);
+        this.nodoA.add(this.base);
+
+        this.club = new THREE.Object3D();
+        this.club.add(this.nodoA);
+        
+        this.add(this.club);
+    }
+    update()
+    {
+        this.superior.rotation.y += 0.015;
+        this.base.rotation.y += 0.015;
+        this.club.rotation.z += 0.01;
+        this.nodoA.rotation.z -= 0.01;
     }
 }

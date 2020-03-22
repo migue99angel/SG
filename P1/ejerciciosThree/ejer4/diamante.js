@@ -17,13 +17,23 @@ class MyDiamond extends THREE.Object3D {
         var diamondGeo = new THREE.ExtrudeBufferGeometry(diamondShape,extrudeSettings);
         this.diamond = new THREE.Mesh(diamondGeo,new THREE.MeshPhongMaterial()); 
         this.diamond.scale.set (0.1,0.1,0.01);
-        this.diamond.position.set(2.0,0.0,0.0);
-        this.add(this.diamond);
+        this.diamond.position.set(4.0,0.0,0.0);
+        //this.add(this.diamond);
+
+        this.cd = new THREE.Object3D();
+        this.cd.position.set(2.0,0.0,0.0);
+        this.cd.add(this.diamond);
+
+        this.diamante = new THREE.Object3D();
+        this.diamante.add(this.cd);
+        
+        this.add(this.diamante);
     }
 
     update()
     {
-        this.scale.set (0.25,0.25,0.1);
-        
+        this.diamond.rotation.y += 0.015;
+        this.diamante.rotation.z += 0.01;
+        this.cd.rotation.z -= 0.01;
     }
 }

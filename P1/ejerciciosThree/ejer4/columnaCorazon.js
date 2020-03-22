@@ -28,9 +28,13 @@ class HeartColumn extends THREE.Object3D {
         this.columnH =  new THREE.Mesh(this.heartnGeo,new THREE.MeshPhongMaterial());
 
         this.columnH.scale.set (0.01,0.01,0.01);
-        this.columnH.position.set(4.0,0.0,0.0);
+        this.columnH.position.set(6.0,0.0,0.0);
         this.columnH.rotation.z = 1/2 * Math.PI;
         this.add(this.columnH);
     }
-    update(){}
+    update()
+    {
+        this.columnH.rotation.y += 0.015;
+        this.columnH.rotation.x += 0.015;
+    }
 }
