@@ -3,7 +3,7 @@ class MyCone extends THREE.Object3D {
     constructor() {
       super();
 
-      var coneGeom = new THREE.ConeGeometry (0.1,0.2,32);
+      var coneGeom = new THREE.ConeGeometry (0.2,0.4,32);
 
       var coneMat =  new THREE.MeshNormalMaterial();
       

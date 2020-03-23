@@ -40,9 +40,9 @@ class MyScene extends THREE.Scene {
 
     this.escuadra = new Escuadra();
     this.add(this.escuadra);
-    this.cilindro = new MyCylinder(0.1)
-    this.cilindro.rotation.x = 3.14/2;
-    this.add(this.cilindro);
+    // this.cilindro = new MyCylinder(0.1)
+    // this.cilindro.rotation.x = 3.14/2;
+    // this.add(this.cilindro);
     // this.cono = new MyCone();
     // this.cono.rotation.x = 3.14;
     //this.cono.translate(0,-0.1,0);

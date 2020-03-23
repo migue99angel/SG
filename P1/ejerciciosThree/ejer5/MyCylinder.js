@@ -3,7 +3,7 @@ class MyCylinder extends THREE.Object3D {
       super();
 
 
-      var cylinderGeom = new THREE.CylinderGeometry (radio,radio,2,15);
+      var cylinderGeom = new THREE.CylinderGeometry (radio,radio,2,30);
 
       var cylinderMat = new THREE.MeshNormalMaterial();
       
