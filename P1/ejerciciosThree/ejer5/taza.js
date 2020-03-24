@@ -5,9 +5,9 @@ class Taza extends THREE.Object3D {
       // Como material se crea uno a partir de un color
       var material = new THREE.MeshNormalMaterial();
       
-      var cilindro = new MyCylinder(1);
+      var cilindro = new MyCylinder(1,30,2);
       var toro = new MyTorus();
-      var cilindroChico = new MyCylinder(0.9);
+      var cilindroChico = new MyCylinder(0.9,30,2);
       
       var geometriaCilindorChico = cilindroChico.getGeometria();
       geometriaCilindorChico.translate(0,0.1,0);
@@ -19,14 +19,18 @@ class Taza extends THREE.Object3D {
       var chicoBSP = new ThreeBSP (geometriaCilindorChico);
   
       var partialResult = cilindroBSP.union(toroBSP);
-      var finalResult = partialResult.union(chicoBSP);
+      var finalResult = partialResult.subtract(chicoBSP);
 
   
-      var resultado = finalResult.toMesh(material);
-      resultado.geometry.computeFaceNormals();
-      resultado.geometry.computeVertexNormals();
+      this.resultado = finalResult.toMesh(material);
+      this.resultado.geometry.computeFaceNormals();
+      this.resultado.geometry.computeVertexNormals();
 
-      this.add(resultado);
+      this.add(this.resultado);
     }
-
+    update()
+    {
+      this.resultado.rotation.y += 0.01
+      this.resultado.rotation.x += 0.01
+    }
 }

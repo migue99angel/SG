@@ -32,22 +32,17 @@ class MyScene extends THREE.Scene {
     
     
     // Por último creamos el modelo.
-    // El modelo puede incluir su parte de la interfaz gráfica de usuario. Le pasamos la referencia a 
-    // la gui y el texto bajo el que se agruparán los controles de la interfaz que añada el modelo.
- 
-    // this.taza = new Taza();
-    // this.add(this.taza);
+
+    this.tuerca = new Tuerca();
+    this.tuerca.position.set(4.0,0.0,0.0);
+    this.add(this.tuerca);
+
+    this.taza = new Taza();
+    this.taza.position.set(-4.0,0.0,0.0);
+    this.add(this.taza);
 
     this.escuadra = new Escuadra();
     this.add(this.escuadra);
-    // this.cilindro = new MyCylinder(0.1)
-    // this.cilindro.rotation.x = 3.14/2;
-    // this.add(this.cilindro);
-    // this.cono = new MyCone();
-    // this.cono.rotation.x = 3.14;
-    //this.cono.translate(0,-0.1,0);
-    // this.add(this.cono);
-
   }
   
   createCamera () {
@@ -106,6 +101,7 @@ class MyScene extends THREE.Scene {
       // En el contexto de una función   this   alude a la función
       this.lightIntensity = 0.5;
       this.axisOnOff = true;
+      this.animation = false;
     }
 
     // Se crea una sección para los controles de esta clase
@@ -116,6 +112,9 @@ class MyScene extends THREE.Scene {
     
     // Y otro para mostrar u ocultar los ejes
     folder.add (this.guiControls, 'axisOnOff').name ('Mostrar ejes : ');
+
+    folder = gui.addFolder('Animación');
+    folder.add (this.guiControls, 'animation').name ('Animacion : ');
     
     return gui;
   }
@@ -198,7 +197,13 @@ class MyScene extends THREE.Scene {
 
     // Se actualiza la posición de la cámara según su controlador
     this.cameraControl.update();
-    
+    if(this.guiControls.animation)
+    {
+      this.taza.update();
+      this.escuadra.update();
+      this.tuerca.update();
+    }
+
   }
 }
 

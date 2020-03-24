@@ -1,8 +1,8 @@
 class MyTorus extends THREE.Object3D {
-    constructor() {
+    constructor(radius = 0.5,tube = 0.3,radialSegments = 15,tubularSegments=15) {
         super();
 
-        var torusGeom = new THREE.TorusGeometry (0.5,0.3,15,15);
+        var torusGeom = new THREE.TorusGeometry (radius,tube,radialSegments,tubularSegments);
 
         var torusMat = new THREE.MeshNormalMaterial();
         

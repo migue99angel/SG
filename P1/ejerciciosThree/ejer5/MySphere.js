@@ -2,7 +2,7 @@ class MySphere extends THREE.Object3D {
     constructor(radio) {
         super();
 
-        var sphereGeom = new THREE.SphereGeometry (radio,50,50,3);
+        var sphereGeom = new THREE.SphereGeometry (radio,32,32,3);
 
         var sphererMat = new THREE.MeshNormalMaterial();
         
@@ -14,10 +14,6 @@ class MySphere extends THREE.Object3D {
       getGeometria()
       {
         return this.esfera.geometry
-      }
-      posicionar(x)
-      {
-        this.esfera.position.y = x;
       }
 
       

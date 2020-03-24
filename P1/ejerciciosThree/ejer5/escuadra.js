@@ -47,11 +47,16 @@ class Escuadra extends THREE.Object3D {
       var finalResult = partial3.subtract(agujero2);
 
   
-      var resultado = finalResult.toMesh(material);
-      resultado.geometry.computeFaceNormals();
-      resultado.geometry.computeVertexNormals();
+      this.resultado = finalResult.toMesh(material);
+      this.resultado.geometry.computeFaceNormals();
+      this.resultado.geometry.computeVertexNormals();
 
-      this.add(resultado);
+      this.add(this.resultado);
+    }
+    update()
+    {
+      this.resultado.rotation.y += 0.01
+      this.resultado.rotation.x += 0.01 
     }
 
 }
